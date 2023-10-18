@@ -13,5 +13,7 @@ set hlsearch
 " highlight incremental searches
 set incsearch
 
+" set tab to be 4 spaces for indentation
+set autoindent expandtab tabstop=4 shiftwidth=4
 
 
