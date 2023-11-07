@@ -1,0 +1,32 @@
+[user]
+    name = Andrew Nolan 
+    email = anolan@lanl.gov
+
+[push]
+    default = simple
+
+[ui]
+    color = true
+
+[alias]
+    export = !sh -c 'git archive ${1} | tar xv -C ${2}' -
+    logg = log --graph --oneline --decorate --author-date-order
+    loggm = log --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short --graph --decorate
+    plg-doug = log --graph --format='%CredH: %C(auto)%h %CredA: %Cblue %aE %Cred S: %Creset %s %C(auto) %d'
+    plg = log --graph --format='%CredH:%C(auto)%h %CredA:%Cblue%aE %Cred D:%Cgreen%ad %Cred S:%Creset%s %C(auto) %d' --date=short
+    up = "fetch --all -p"
+
+[merge]
+    tool = vimdiff
+    summary = true
+    ff = false
+
+[github] 
+    username = andrewdnolan
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+
+
