@@ -101,7 +101,7 @@ set wildmenu
 set wildmode=longest,list,full
 
 
-
+let g:tmuxline_powerline_separators = 0
 " used patched fonts for airline arrows/triangles
 "let g:airline_powerline_fonts=1
 "let g:airline#extensions#tabline#enabled = 1
