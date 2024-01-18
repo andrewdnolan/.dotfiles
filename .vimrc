@@ -2,8 +2,9 @@
 " https://gist.github.com/miguelgrinberg/527bb5a400791f89b3c4da4bd61222e4
 let need_to_install_plugins = 0
 if empty(glob('~/.vim/bundle/Vundle.vim'))
-    echo "erhm"
-    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    silent !git clone
+        \ https://github.com/VundleVim/Vundle.vim.git
+        \ ~/.vim/bundle/Vundle.vim
     let need_to_install_plugins = 1
 endif
 
@@ -18,12 +19,16 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+" For git branch in vim status line 
+Plugin 'tpope/vim-fugitive'
 " lean & mean status/tabline for vim that's light as air  
 Plugin 'vim-airline/vim-airline'
 " A collection of themes for vim-airline 
 Plugin 'vim-airline/vim-airline-themes'
 " Simple tmux statusline generator with support for powerline symbols
 Plugin 'edkolev/tmuxline.vim'
+" Easier navigation between tmux panes and vim splits 
+Plugin 'christoomey/vim-tmux-navigator'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -43,8 +48,11 @@ endif
 
 " always show the status bar
 set laststatus=2
+
 " show line numbers
+set relativenumber
 set number 
+
 " highlight matching bracket or brace
 set showmatch
 
@@ -90,7 +98,7 @@ set nocompatible
 set ruler
 
 " Add git branch to statusline
-"set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
+set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
 
 " enables bash aliases from vim shell
 set shell=bash
@@ -98,7 +106,11 @@ set shell=bash
 " Better command-line completion
 set wildmenu
 set wildmode=longest,list,full
-
+" no more pesky escape (for insert and visual mode)
+imap kj <Esc>
+imap kJ <Esc>
+imap Kj <Esc>
+imap KJ <Esc>
 
 let g:tmuxline_powerline_separators = 1
 " used patched fonts for airline arrows/triangles

@@ -7,7 +7,7 @@ else ifeq ($(shell uname),Linux)
 	font_file = $(HOME)/.local/share/fonts/Ubuntu\ Mono\ derivative\ Powerline.ttf
 endif
 
-install: install-vim install-git
+install: install-vim install-git install-tmux
 
 install-git:
 	rm -f ~/.gitconfig
@@ -16,6 +16,10 @@ install-git:
 install-vim: install-powerline-fonts
 	rm -f ~/.vimrc   
 	ln -s $(PWD)/.vimrc ~/.vimrc    
+
+install-tmux:
+	rm -f ~/.tmux.conf
+	ln -s $(PWD)/.tmux.conf ~/.tmux.conf
 
 install-powerline-fonts: 
 	@if test ! -f $(font_file) ; then \

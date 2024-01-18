@@ -30,3 +30,5 @@
     branch = auto
 
 
+[core]
+	editor = /usr/bin/vim
