@@ -1,10 +1,9 @@
-" Automatic plugin install on new machines, following: 
+" Automatic plugin install on new machines, following:
 " https://gist.github.com/miguelgrinberg/527bb5a400791f89b3c4da4bd61222e4
 let need_to_install_plugins = 0
 if empty(glob('~/.vim/bundle/Vundle.vim'))
-    silent !git clone 
-        \ https://github.com/VundleVim/Vundle.vim.git 
-        \ ~/.vim/bundle/Vundle.vim
+    echo "erhm"
+    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     let need_to_install_plugins = 1
 endif
 
@@ -101,12 +100,12 @@ set wildmenu
 set wildmode=longest,list,full
 
 
-let g:tmuxline_powerline_separators = 0
+let g:tmuxline_powerline_separators = 1
 " used patched fonts for airline arrows/triangles
-"let g:airline_powerline_fonts=1
+let g:airline_powerline_fonts=1
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#show_buffers = 0
 "let g:airline#extensions#tabline#show_close_button = 0
 ""format the airline statusbar
-"let g:airline_theme='solarized'
-"let g:airline_solarized_bg='dark'
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='dark'
