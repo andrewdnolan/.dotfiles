@@ -112,6 +112,9 @@ imap kJ <Esc>
 imap Kj <Esc>
 imap KJ <Esc>
 
+" better FORTRAN syntax highligthing  
+let b:fortran_fixed_source=0
+
 let g:tmuxline_powerline_separators = 1
 " used patched fonts for airline arrows/triangles
 let g:airline_powerline_fonts=1
