@@ -29,6 +29,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'edkolev/tmuxline.vim'
 " Easier navigation between tmux panes and vim splits 
 Plugin 'christoomey/vim-tmux-navigator'
+" Allow LaTeX/unicode characters in vim for julia 
+Plugin 'JuliaEditorSupport/julia-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
