@@ -76,6 +76,9 @@ set confirm
 " python specific colorcolumn following PEP8
 autocmd FileType python setlocal colorcolumn=80
 
+" enable xml syntax highlighting for streams files
+au BufRead,BufNewFile streams.landice,streams.ocean,streams.seaice set filetype=xml
+
 " Set the command window height to 2 lines, to avoid many cases of having to
 " press <Enter> to continue"
 set cmdheight=2
