@@ -9,11 +9,11 @@ alias -- -="cd -"
 # List dir contents aliases
 # https://manpages.ubuntu.com/manpages/oracular/en/man1/ls.1.html
 # Always list with color 
-alias ls="ls -G"
+alias ls="ls --color=auto"
 # Long form list, with color
-alias ll="ls -lG"
+alias ll="ls -l"
 # Long form list, order by last modified (reverse), list all expect . and .. 
-alias lrt="ls -rtlAG"
+alias lrt="ls -rtlA"
 
 # Ensure colored output is always used for grep
 alias grep="grep --color"
