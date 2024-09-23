@@ -130,12 +130,17 @@ let g:airline_powerline_fonts=1
 ""format the airline statusbar
 let g:airline_theme='onehalfdark'
 
-
 """""""""""""""""""""""""""""""""
 " Editor theme settings
 """""""""""""""""""""""""""""""""
 set t_Co=256
 colorscheme onehalfdark
+
+" onehalfdark tries to italicize comment, but if that fails
+" it results in a background color for comments. this feature
+" is turned off to avoid any problems
+hi Comment gui=None cterm=None
+" ^Only applies to onehalfdark scheme, should add condition
 
 " set Vim-specific sequences for RGB colors
 if exists('+termguicolors')
