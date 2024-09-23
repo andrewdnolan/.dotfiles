@@ -19,3 +19,8 @@ alias lrt="ls -rtlA"
 alias grep="grep --color"
  
 #alias squ="squeue -o '%u%T%j%P%A%D%M%I%V%S' -u $USER"
+# Check if on SLURM machine
+if [ -x $(command -v squeue) ]; then
+    alias sqa="squeue -o "%8u %.7a %.4D %.10P %8i %.2t %.10r %.10M %.10l %.8Q %j" --sort=P,-t,-p"
+    alias sq="sqa -u $USER"
+fi
