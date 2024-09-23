@@ -7,13 +7,13 @@ source ./lib/utils
 # install the tmux package manager
 if [[ ! -x "${HOME}/.tmux/plugins/tpm/tpm" ]]; then
     # Docs: https://github.com/tmux-plugins/tpm
-    git clone "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
+    git clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
 fi
 
 # install Vundle (i.e. vim package manager)
 if [[ ! -d "${HOME}/.vim/bundle/Vundle.vim" ]]; then
     # Docs: https://github.com/VundleVim/Vundle.vim
-    git clone "https://github.com/VundleVim/Vundle.vim.git" "~/.vim/bundle/Vundle.vim"
+    git clone "https://github.com/VundleVim/Vundle.vim.git" "${HOME}/.vim/bundle/Vundle.vim"
 fi
 
 #######################################
