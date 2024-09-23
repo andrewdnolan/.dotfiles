@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#######################################
+#
+#######################################
+set_prompt(){
+
+    _bold=""
+    _reset=""
+
+    local _r=""
+    local _b=""
+    local _c=""
+    local _g=""
+    local _w=""
+    local _y=""
+    local _v=""
+    local _o=""
+    local _m=""
+
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        tput sgr0 #reser colors
+        
+        _bold=$(tput bold)
+        _reset=$(tput sgr0)
+        
+        _r=$(tput setaf 124) # red
+        _b=$(tput setaf  33) # blue
+        _c=$(tput setaf  37) # cyan
+        _g=$(tput setaf  64) # green
+        _w=$(tput setaf 254) # white
+        _y=$(tput setaf 136) # yellow
+        _v=$(tput setaf  61) # violet
+        _o=$(tput setaf 166) # orange
+        _m=$(tput setaf 125) # magenta
+    else
+
+        _bold=""
+        _reset="\e[0m"
+
+        _r="" # red
+        _b="" # blue
+        _c="" # cyan
+        _g="" # green
+        _w="" # white
+        _y="" # yellow
+        _v="" # violet
+        _o="" # orange
+        _m="" # magenta
+    fi
+
+    PS1="\[$_o\]\u"               # orange user
+    PS1+="\[$_w\]@"               # white @
+    PS1+="\[$_y\]\h"              # yellow hostname (up to the first .)
+    PS1+="\[$_w\]: "              # white colon with a space
+    PS1+="\[$_g\]\w "             # green working direcotry, with no path
+    PS1+="\[$_w\]\[$_bold\]\$ "   # white and bold dollar sign
+    PS1+="\[$_reset\]"            # reset everything
+
+    export PS1
+}
+
+set_prompt
+unset set_prompt
