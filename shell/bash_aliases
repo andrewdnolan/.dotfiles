@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Easier navigation: .., ..., ~, -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ~="cd ~"
+alias -- -="cd -"
+
+# List dir contents aliases
+# https://manpages.ubuntu.com/manpages/oracular/en/man1/ls.1.html
+# Always list with color 
+alias ls="ls -G"
+# Long form list, with color
+alias ll="ls -lG"
+# Long form list, order by last modified (reverse), list all expect . and .. 
+alias lrt="ls -rtlAG"
+
+# Ensure colored output is always used for grep
+alias grep="grep --color"
+ 
+#alias squ="squeue -o '%u%T%j%P%A%D%M%I%V%S' -u $USER"

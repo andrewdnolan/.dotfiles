@@ -1,0 +1,11 @@
+# OSX file 
+.DS_Store
+
+# Files tat might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Always ignore files with these extensions
+*.vi
+*.sw?
+*.pyc

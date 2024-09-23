@@ -1,6 +1,7 @@
 # .dotfiles
 
 
+A `dotfile` configuration heavily following: https://github.com/necolas/dotfiles.
 __Working Notes__: 
   - https://www.bugsnag.com/blog/tmux-and-vim/
     - https://github.com/keeganlow/dotfiles/blob/master/.vimrc#L219C5-L219C5

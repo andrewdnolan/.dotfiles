@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# hardcoded certification file for nersc/perlmutter
+certfile="${HOME}/.ssh/nersc-cert.pub"
+
+# 
+valid=$(ssh-keygen -L -f $certfile | grep Valid)
+valid=${valid/+( )/}
+valid=${valid/Valid/valid}
+
+# extract expiration date from the "valid" line as parssed above
+expiry=${valid/valid*to /}
+
+# this only works on OSX machines
+# Conver the date to epoch
+expepoch=$(date -j -f '%FT%T' $expiry +%s)
+# get current datetime in epoch time
+epoch=$(date -j +%s)
+
+# compute the interval between expiration and now 
+# (minus one second just to be sure) 
+interval=$(( $expepoch - $epoch - 1 ))
+
+if [[ $interval -lt 0 ]]; then
+# ssh key expired, re-run certification script
+    ~/bin/sshproxy.sh
+fi
+
+# Now, that we can ensure the certif is up to date
+# actually login 
+ssh perlmutter.nersc.gov #-XY 

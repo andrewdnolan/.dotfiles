@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#######################################
+# Determine which supported machine we are on
+#######################################
+discover_machine(){
+    local host=`hostname -s`
+    local domain=`hostname -d`
+     
+    if [[ $host == "pn"* ]] && [[ $domain == *"lanl"* ]] && [[ $(uname) == "Darwin" ]]; then
+        MACHINE=lanl_macbook
+    elif [[ $host == "ch-fe"* ]] && [[ $domain == *"lanl"* ]]; then
+        MACHINE=chicoma
+    elif [[ $host == "login"* ]] && [[ $domain == *"perlmutter"* ]]; then
+        # NOTE: This will only apply to login nodes, not data transfer nodes 
+        MACHINE=perlmutter
+    fi
+
+    # export empty value even if machine is not recognized
+    export MACHINE
+}
+
+#######################################
+# Determine if the supported machine is a SLURM machine
+#######################################
+discover_slurm(){
+    case $MACHINE in 
+        "perlmutter" | "chicoma")
+            # even if on HPC machine, make sure slurm commands are available
+            if [[ ! -z $(which sbatch) ]]; then
+                SLURM_MACHINE=true
+            else
+                SLURM_MACHINE=false
+            fi
+            ;;
+         *)
+            SLURM_MACHINE=false
+            ;;
+    esac
+
+    export SLURM_MACHINE
+}
+
+#######################################
+# Loop over dotfiles and source them
+#######################################
+load_dotfiles(){
+    dot_files=(
+        $HOME/.dotfiles/shell/bash_exports # Exports
+        $HOME/.dotfiles/shell/bash_aliases # Aliases
+        $HOME/.dotfiles/shell/bash_prompt  # shell prompt
+        $HOME/.dotfiles/shell/conda_init   # conda init
+    )
+
+    for index in ${!dot_files[*]};do
+        if [[ -r ${dot_files[$index]} ]]; then
+            source  ${dot_files[$index]}
+        fi
+    done
+}
+
+# set global variables needed for sourcing
+discover_machine
+discover_slurm
+
+# load the dotfiles using the global variables $MACHINE and $SLURM_MACHINE
+# to deal with machine specific configurations
+load_dotfiles
+
+unset discover_machine
+unset discover_slurm
+unset load_dotfiles

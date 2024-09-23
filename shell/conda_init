@@ -1,0 +1,52 @@
+#!/bin/bash
+
+source ${HOME}/.dotfiles/lib/utils
+
+find_conda_install(){
+
+    CONDA_INSTALL_LOCATION=$(
+    find "$1" -maxdepth 1 -type d \( -name "mambaforge" \
+                                  -o -name "miniforge*" \)
+    )
+    
+    # should probably check is somehow multiple condas are found
+    if [[ -z ${CONDA_INSTALL_LOCATION} ]]; then
+        e_error "Conda not found"
+    fi
+}
+
+# export machine specific settings
+case $MACHINE in 
+
+    "perlmutter")
+        find_conda_install "${HOME}/"
+        ;;
+    "chicoma")
+        find_conda_install "/usr/projects/climate/anolan"
+        ;;
+    *)
+        find_conda_install $HOME 
+        ;;
+esac
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$("$CONDA_INSTALL_LOCATION/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$CONDA_INSTALL_LOCATION/etc/profile.d/conda.sh" ]; then
+        . "$CONDA_INSTALL_LOCATION/etc/profile.d/conda.sh"
+    else
+        export PATH="$CONDA_INSTALL_LOCATION/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "$CONDA_INSTALL_LOCATION/etc/profile.d/mamba.sh" ]; then
+    . "$CONDA_INSTALL_LOCATION/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
+unset find_conda_install
+unset CONDA_INSTALL_LOCATION
