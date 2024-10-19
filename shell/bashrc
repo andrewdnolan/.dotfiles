@@ -14,6 +14,8 @@ discover_machine(){
     elif [[ $host == "login"* ]] && [[ $domain == *"perlmutter"* ]]; then
         # NOTE: This will only apply to login nodes, not data transfer nodes 
         MACHINE=perlmutter
+    elif [[ $host == "cedar"* ]] && [[ $domain == *"computecanada.ca"* ]]; then
+        MACHINE=cedar
     fi
 
     # export empty value even if machine is not recognized
