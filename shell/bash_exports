@@ -1,19 +1,6 @@
 #!/bin/bash
 
 #######################################
-# Set LANL network proxy values. 
-#######################################
-export_LANL_proxy(){
-    # see https://hpc.lanl.gov/proxy_setup
-    export http_proxy="http://proxyout.lanl.gov:8080"
-    export https_proxy="http://proxyout.lanl.gov:8080"
-    export ftp_proxy="http://proxyout.lanl.gov:8080"
-    export HTTP_PROXY="http://proxyout.lanl.gov:8080"
-    export HTTPS_PROXY="http://proxyout.lanl.gov:8080"
-    export FTP_PROXY="http://proxyout.lanl.gov:8080"
-}
-
-#######################################
 # Suppress bash deprecation warning on osx.
 #######################################
 export_bash_warning_supression(){
@@ -34,13 +21,8 @@ export_history_settings
 
 # export machine specific settings
 case $MACHINE in 
-
     "lanl_macbook")
-        export_LANL_proxy
         export_bash_warning_supression
-        ;;
-    "chicoma")
-        export_LANL_proxy
         ;;
 esac
     
