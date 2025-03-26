@@ -14,6 +14,8 @@ discover_machine(){
     elif [[ $host == "login"* ]] && [[ $domain == *"perlmutter"* ]]; then
         # NOTE: This will only apply to login nodes, not data transfer nodes 
         MACHINE=perlmutter
+    elif [[ $host == "chr"* ]] && [[ $domain == *"lcrc.anl.gov"* ]]; then
+        MACHINE=chrysalis
     elif [[ $host == "cedar"* ]] && [[ $domain == *"computecanada.ca"* ]]; then
         MACHINE=cedar
     fi
@@ -27,7 +29,7 @@ discover_machine(){
 #######################################
 discover_slurm(){
     case $MACHINE in 
-        "perlmutter" | "chicoma")
+	    "perlmutter" | "chicoma" | "chrysalis")
             # even if on HPC machine, make sure slurm commands are available
             if [[ ! -z $(which sbatch) ]]; then
                 SLURM_MACHINE=true

@@ -24,6 +24,9 @@ case $MACHINE in
     "chicoma")
         find_conda_install "/usr/projects/climate/anolan"
         ;;
+    "chrysalis")
+        find_conda_install "${HOME}/"
+        ;;
     "cedar")
         # don't look for conda install on cedar
         true
