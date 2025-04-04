@@ -4,10 +4,7 @@ source ${HOME}/.dotfiles/lib/utils
 
 find_conda_install(){
 
-    CONDA_INSTALL_LOCATION=$(
-    find "$1" -maxdepth 1 -type d \( -name "mambaforge" \
-                                  -o -name "miniforge*" \)
-    )
+    CONDA_INSTALL_LOCATION=$(find "$1" -maxdepth 1 -type d -name "miniforge3")
     
     # should probably check is somehow multiple condas are found
     if [[ -z ${CONDA_INSTALL_LOCATION} ]]; then
@@ -22,7 +19,7 @@ case $MACHINE in
         find_conda_install "${HOME}/"
         ;;
     "chicoma")
-        find_conda_install "/usr/projects/climate/anolan"
+        find_conda_install "/usr/projects/climate/anolan/"
         ;;
     "chrysalis")
         find_conda_install "${HOME}/"
@@ -32,28 +29,22 @@ case $MACHINE in
         true
         ;;
     *)
-        find_conda_install $HOME 
+        find_conda_install "${HOME}/"
         ;;
 esac
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$CONDA_INSTALL_LOCATION/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='/global/u2/a/anolan/miniforge3/bin/mamba';
+export MAMBA_ROOT_PREFIX='/global/u2/a/anolan/miniforge3';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+    eval "$__mamba_setup"
 else
-    if [ -f "$CONDA_INSTALL_LOCATION/etc/profile.d/conda.sh" ]; then
-        . "$CONDA_INSTALL_LOCATION/etc/profile.d/conda.sh"
-    else
-        export PATH="$CONDA_INSTALL_LOCATION/bin:$PATH"
-    fi
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
 fi
-unset __conda_setup
-
-if [ -f "$CONDA_INSTALL_LOCATION/etc/profile.d/mamba.sh" ]; then
-    . "$CONDA_INSTALL_LOCATION/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
+unset __mamba_setup
+# <<< mamba initialize <<<
 
 unset find_conda_install
 unset CONDA_INSTALL_LOCATION
