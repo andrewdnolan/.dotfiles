@@ -29,6 +29,5 @@ case $MACHINE in
 esac
 
 # clean up namespace
-unset export_LANL_proxy
 unset export_history_settings
 unset export_bash_warning_supression

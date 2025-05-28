@@ -12,12 +12,12 @@ alias -- -="cd -"
 alias ls="ls --color=auto"
 # Long form list, with color
 alias ll="ls -l"
-# Long form list, order by last modified (reverse), list all expect . and .. 
+# Long form list, order by last modified (reverse), list all expect . and ..
 alias lrt="ls -rtlA"
 
 # Ensure colored output is always used for grep
 alias grep="grep --color"
- 
+
 ## Check if on SLURM machine
 #if [ -x $(command -v squeue) ]; then
 #    alias sqa="squeue -o "%8u %.7a %.4D %.10P %8i %.2t %.10r %.10M %.10l %.8Q %j" --sort=P,-t,-p"

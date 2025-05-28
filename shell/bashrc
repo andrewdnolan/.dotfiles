@@ -6,13 +6,13 @@
 discover_machine(){
     local host=`hostname -s`
     local domain=`hostname -d`
-     
+
     if [[ $host == "pn"* ]] && [[ $domain == *"lanl"* ]] && [[ $(uname) == "Darwin" ]]; then
         MACHINE=lanl_macbook
     elif [[ $host == "ch-fe"* ]] && [[ $domain == *"lanl"* ]]; then
         MACHINE=chicoma
     elif [[ $host == "login"* ]] && [[ $domain == *"perlmutter"* ]]; then
-        # NOTE: This will only apply to login nodes, not data transfer nodes 
+        # NOTE: This will only apply to login nodes, not data transfer nodes
         MACHINE=perlmutter
     elif [[ $host == "chr"* ]] && [[ $domain == *"lcrc.anl.gov"* ]]; then
         MACHINE=chrysalis
@@ -28,8 +28,8 @@ discover_machine(){
 # Determine if the supported machine is a SLURM machine
 #######################################
 discover_slurm(){
-    case $MACHINE in 
-	    "perlmutter" | "chicoma" | "chrysalis")
+    case $MACHINE in
+        "perlmutter" | "chicoma" | "chrysalis")
             # even if on HPC machine, make sure slurm commands are available
             if [[ ! -z $(which sbatch) ]]; then
                 SLURM_MACHINE=true
