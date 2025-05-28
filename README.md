@@ -21,20 +21,6 @@ Next change the font to `Ubuntu Mono` and set the default text size to 16.
 Then, click the "Color & Effects" menu and set the Opacity to 90% and the Blur to 5%.
 Finally, set this profile as the Default. 
 
-## Using Spack as the package manager
-If spack is not already install, then do so:
-```shell
-git clone -c feature.manyFiles=true --depth=2 https://github.com/spack/spack.git
-source spack/share/spack/setup-env.sh
-```
-The create the environment (i.e. `osx-env`):
-```shell
-spack env create osx-env
-spack -e osx-env add bash@5.2 tmux@3.5a bash-completion
-spack -e osx-env concretize
-spack -e osx-enc install
-```
-
 <!--
 __Working Notes__: 
   - https://www.bugsnag.com/blog/tmux-and-vim/

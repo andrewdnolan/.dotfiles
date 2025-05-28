@@ -1,0 +1,13 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs:
+  - bash@5.2
+  - tmux@3.5a
+  - bash-completion
+  view: true
+  concretizer:
+    unify: true

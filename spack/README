@@ -1,0 +1,28 @@
+# Using Spack as the package manager on Mac OS X
+If spack is not already install, then do so:
+```shell
+git clone -c feature.manyFiles=true --depth=2 https://github.com/spack/spack.git
+. spack/share/spack/setup-env.sh
+```
+
+The create the environment, concretize it, and install the needed packages:
+```shell
+spack env create osx-env ~/.dotfiles/spack/osx-env.sh
+spack -e osx-env concretize
+spack -e osx-env install
+```
+
+This environment includes a newer Bash installation.
+In order to change the default shell to this installation,
+we first need to add it to the list of acceptable shells.
+Sign into the admin account
+```shell
+sudo vim /etc/shells
+```
+
+Then, return to your user account, and run:
+```
+chsh -s /path/to/bash
+```
+After you restart you shell, run `echo $SHELL` to confirm it points to the
+newer version of bash.
