@@ -15,6 +15,7 @@
     plg-doug = log --graph --format='%CredH: %C(auto)%h %CredA: %Cblue %aE %Cred S: %Creset %s %C(auto) %d'
     plg = log --graph --format='%CredH:%C(auto)%h %CredA:%Cblue%aE %Cred D:%Cgreen%ad %Cred S:%Creset%s %C(auto) %d' --date=short
     up = "fetch --all -p"
+    diffc = "diff --cached"
 
 [merge]
     tool = vimdiff
