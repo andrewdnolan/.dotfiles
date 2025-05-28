@@ -7,9 +7,12 @@ alias ~="cd ~"
 alias -- -="cd -"
 
 # List dir contents aliases
-# https://manpages.ubuntu.com/manpages/oracular/en/man1/ls.1.html
-# Always list with color 
-alias ls="ls --color=auto"
+if [[ $(uname) = "Darwin" ]]; then
+    # Mac OS X has BSD version of ls
+    alias ls="ls -G"
+else
+    alias ls="ls --color=auto"
+fi
 # Long form list, with color
 alias ll="ls -l"
 # Long form list, order by last modified (reverse), list all expect . and ..
