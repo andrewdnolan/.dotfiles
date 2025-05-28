@@ -71,6 +71,13 @@ discover_slurm
 # to deal with machine specific configurations
 load_dotfiles
 
+if [[ $MACHINE = "lanl_macbook" ]]; then
+    if [[ -f "${HOME}/spack/share/spack/setup-env.sh" ]]; then
+        . "${HOME}/spack/share/spack/setup-env.sh"
+        spack env activate osx-env
+    fi
+fi
+
 unset discover_machine
 unset discover_slurm
 unset load_dotfiles
