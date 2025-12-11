@@ -20,6 +20,8 @@ discover_machine(){
         MACHINE=cedar
     elif [[ $domain == *"aurora.alcf.anl.gov"  ]]; then
         MACHINE=aurora
+    elif [[ $domain == *"polaris.alcf.anl.gov" ]]; then
+        MACHINE=polairs
     fi
 
     # export empty value even if machine is not recognized
