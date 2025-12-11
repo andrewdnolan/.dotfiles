@@ -54,6 +54,7 @@ load_dotfiles(){
         $HOME/.dotfiles/shell/bash_aliases # Aliases
         $HOME/.dotfiles/shell/bash_prompt  # shell prompt
         $HOME/.dotfiles/shell/conda_init   # conda init
+        $HOME/.dotfiles/shell/machines.sh  # machine specific configs
     )
 
     for index in ${!dot_files[*]};do
