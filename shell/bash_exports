@@ -14,7 +14,7 @@ export_history_settings(){
     export HISTFILESIZE=1000
     export HISTSIZE=1000
     export HISTTIMEFORMAT="%h %d %H:%M:%S "
-    export HISTIGNORE='history *:clear:git status:date'
+    export HISTIGNORE="history*:!*history*:clear:git status:date"
 }
 
 # history settings apply to all machines
