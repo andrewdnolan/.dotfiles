@@ -1,7 +1,17 @@
 #!/bin/bash
 
+load_tmux_module(){
+    if ! hash tmux 2>/dev/null; then
+        module load tmux
+    fi
+}
+
+aurora_config(){
+    load_tmux_module
+}
+
 chrysalis_config(){
-    module load tmux
+    load_tmux_module
 }
 
 # set machine specific configurations

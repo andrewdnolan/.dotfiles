@@ -18,6 +18,8 @@ discover_machine(){
         MACHINE=chrysalis
     elif [[ $host == "cedar"* ]] && [[ $domain == *"computecanada.ca"* ]]; then
         MACHINE=cedar
+    elif [[ $domain == *"aurora.alcf.anl.gov"  ]]; then
+        MACHINE=aurora
     fi
 
     # export empty value even if machine is not recognized
