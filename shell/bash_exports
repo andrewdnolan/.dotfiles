@@ -17,6 +17,15 @@ export_history_settings(){
     export HISTIGNORE="history*:!*history*:clear:git status:date"
 }
 
+
+#######################################
+# Configure for DoD's HPCMP Kerberos Kit
+#######################################
+export_HPCMP_Kerberos(){
+    export PATH="/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
+    export KRB5_CONFIG=/etc/krb5.conf
+}
+
 # history settings apply to all machines
 export_history_settings
 
@@ -25,6 +34,7 @@ case $MACHINE in
 
     "lanl_macbook")
         export_bash_warning_supression
+        export_HPCMP_Kerberos
         ;;
 
 esac
