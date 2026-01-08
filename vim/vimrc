@@ -33,6 +33,8 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'JuliaEditorSupport/julia-vim'
 " Onehalf theme
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
+" show git diff in the sign column
+Plugin 'airblade/vim-gitgutter'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
