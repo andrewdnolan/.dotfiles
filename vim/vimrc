@@ -8,7 +8,7 @@ if empty(glob('$HOME/.vim/bundle/Vundle.vim'))
     let need_to_install_plugins = 1
 endif
 
-" Following from `Vundle` Quick start at:  
+" Following from `Vundle` Quick start at:
 " https://github.com/VundleVim/Vundle.vim/blob/master/README.md
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -19,17 +19,17 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" For git branch in vim status line 
+" For git branch in vim status line
 Plugin 'tpope/vim-fugitive'
-" lean & mean status/tabline for vim that's light as air  
+" lean & mean status/tabline for vim that's light as air
 Plugin 'vim-airline/vim-airline'
-" A collection of themes for vim-airline 
+" A collection of themes for vim-airline
 Plugin 'vim-airline/vim-airline-themes'
 " Simple tmux statusline generator with support for powerline symbols
 Plugin 'edkolev/tmuxline.vim'
-" Easier navigation between tmux panes and vim splits 
+" Easier navigation between tmux panes and vim splits
 Plugin 'christoomey/vim-tmux-navigator'
-" Allow LaTeX/unicode characters in vim for julia 
+" Allow LaTeX/unicode characters in vim for julia
 Plugin 'JuliaEditorSupport/julia-vim'
 " Onehalf theme
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
@@ -38,9 +38,9 @@ Plugin 'airblade/vim-gitgutter'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
-" have vim try to recognize file types 
+" have vim try to recognize file types
 filetype plugin indent on    " required
-" turn on syntax highlighting 
+" turn on syntax highlighting
 syntax on
 
 if need_to_install_plugins == 1
@@ -56,7 +56,7 @@ set laststatus=2
 
 " show line numbers
 set relativenumber
-set number 
+set number
 
 " highlight matching bracket or brace
 set showmatch
@@ -120,7 +120,7 @@ imap kJ <Esc>
 imap Kj <Esc>
 imap KJ <Esc>
 
-" better FORTRAN syntax highligthing  
+" better FORTRAN syntax highligthing
 let b:fortran_fixed_source=0
 
 let g:tmuxline_powerline_separators = 1
