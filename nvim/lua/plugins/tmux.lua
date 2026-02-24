@@ -2,6 +2,18 @@
 -- https://github.com/aserowy/tmux.nvim
 return {
     {
+        -- Generate a tmux statusline that matches the neovim colorscheme.
+        -- After changing themes, re-run :TmuxlineSnapshot ~/.tmux/tmuxline.conf
+        -- to export an updated static snapshot that persists when nvim is closed.
+        -- https://github.com/edkolev/tmuxline.vim
+        "edkolev/tmuxline.vim",
+        cond = function() return vim.env.TMUX end,
+        init = function()
+            -- Use powerline-style separators (requires a patched/Nerd font)
+            vim.g.tmuxline_powerline_separators = 1
+        end,
+    },
+    {
         "aserowy/tmux.nvim",
         opts = {
             copy_sync = {
