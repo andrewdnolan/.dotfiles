@@ -10,12 +10,6 @@ if [[ ! -x "${HOME}/.tmux/plugins/tpm/tpm" ]]; then
     git clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
 fi
 
-# install Vundle (i.e. vim package manager)
-if [[ ! -d "${HOME}/.vim/bundle/Vundle.vim" ]]; then
-    # Docs: https://github.com/VundleVim/Vundle.vim
-    git clone "https://github.com/VundleVim/Vundle.vim.git" "${HOME}/.vim/bundle/Vundle.vim"
-fi
-
 #######################################
 #
 #######################################
@@ -32,6 +26,11 @@ archive_dotfile(){
                            -o -name ".gitconfig" \
                            -o -name ".gitignore" \) \
                            -exec cp {} $backupdir ";"
+
+    # archive existing neovim config if present
+    if [[ -e "${HOME}/.config/nvim" ]]; then
+        cp -r "${HOME}/.config/nvim" "${backupdir}/nvim"
+    fi
     
     # tar the acrhive dir
     tar -cvf "${backupdir}.tar" $backupdir
@@ -65,6 +64,10 @@ mirrorfiles() {
     link "git/gitignore"      ".gitignore"
     link "vim/vimrc"          ".vimrc"
     link "tmux/tmux.conf"     ".tmux.conf"
+
+    # Symlink neovim config directory
+    mkdir -p "${HOME}/.config"
+    link "nvim" ".config/nvim"
 
     e_success "Dotfiles installation complete!"
 }
