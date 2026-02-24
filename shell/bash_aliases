@@ -21,9 +21,15 @@ alias lrt="ls -rtlA"
 # Ensure colored output is always used for grep
 alias grep="grep --color"
 
+# Use neovim as default vim if available
+if hash nvim 2>/dev/null; then
+    alias vim="nvim"
+fi
+
 if hash squeue 2>/dev/null; then
     squeue_format=(%8u %.7a %.4D %.10P %8i %.2t %.10r %.10M %.10l %.8Q %j)
     alias sqa="squeue -o \"${squeue_format[@]}\" --sort=P,-t,-p"
     alias sq="sqa -u $USER"
     unset squeue_format
 fi
+

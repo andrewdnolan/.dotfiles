@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Add neovim binary directory to PATH.
+# Install location can be overridden by setting $NVIM_INSTALL_DIR before
+# sourcing (e.g. in machines.sh).  Default is $HOME/.local, which is the
+# XDG user-local prefix used by the install_neovim bootstrap in bin/dotfiles.
+export PATH="${NVIM_INSTALL_DIR:-${HOME}/.local}/bin:${PATH}"

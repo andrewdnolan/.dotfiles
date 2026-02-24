@@ -54,6 +54,7 @@ discover_slurm(){
 #######################################
 load_dotfiles(){
     dot_files=(
+        $HOME/.dotfiles/shell/bash_paths   # PATH additions
         $HOME/.dotfiles/shell/bash_exports # Exports
         $HOME/.dotfiles/shell/bash_aliases # Aliases
         $HOME/.dotfiles/shell/bash_prompt  # shell prompt

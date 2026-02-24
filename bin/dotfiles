@@ -4,11 +4,61 @@ DOTFILES_DIRECTORY="${HOME}/.dotfiles"
 
 source ./lib/utils
 
+#######################################
+# Install neovim into $NVIM_INSTALL_DIR (default: $HOME/.local).
+# On Linux   – downloads the stable AppImage and places it at
+#              $NVIM_INSTALL_DIR/bin/nvim.
+# On macOS   – downloads the appropriate pre-built tarball and extracts
+#              the full tree (bin/, lib/, share/) into $NVIM_INSTALL_DIR
+#              so that the binary can locate its runtime files.
+# Set NVIM_INSTALL_DIR before running to use a non-default location, e.g.
+#   NVIM_INSTALL_DIR=/opt/local bin/dotfiles
+#######################################
+install_neovim() {
+    local install_dir="${NVIM_INSTALL_DIR:-${HOME}/.local}"
+    local bin_dir="${install_dir}/bin"
+
+    if [[ -x "${bin_dir}/nvim" ]]; then
+        e_success "neovim already installed at ${bin_dir}/nvim"
+        return
+    fi
+
+    mkdir -p "${bin_dir}"
+
+    if [[ $(uname) == "Darwin" ]]; then
+        local arch
+        arch=$(uname -m)   # arm64 or x86_64
+        local tarball="nvim-macos-${arch}.tar.gz"
+        local url="https://github.com/neovim/neovim/releases/latest/download/${tarball}"
+        local tmpdir
+        tmpdir=$(mktemp -d)
+
+        e_header "Downloading neovim (${arch}) for macOS..."
+        curl -fL -o "${tmpdir}/${tarball}" "${url}"
+        # Extract the full tarball (bin/, lib/, share/) into $install_dir so
+        # the binary can locate its runtime files at ../share/nvim/runtime.
+        mkdir -p "${install_dir}"
+        tar -xzf "${tmpdir}/${tarball}" -C "${install_dir}" --strip-components=1
+        rm -rf "${tmpdir}"
+    else
+        local url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage"
+
+        e_header "Downloading neovim AppImage for Linux..."
+        curl -fL -o "${bin_dir}/nvim" "${url}"
+        chmod u+x "${bin_dir}/nvim"
+    fi
+
+    e_success "neovim installed to ${bin_dir}/nvim"
+}
+
 # install the tmux package manager
 if [[ ! -x "${HOME}/.tmux/plugins/tpm/tpm" ]]; then
     # Docs: https://github.com/tmux-plugins/tpm
     git clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
 fi
+
+# install neovim if not already present
+install_neovim
 
 #######################################
 #
