@@ -23,8 +23,10 @@ return {
             navigation = {
                 -- cycle to opposite pane when navigating beyond the border
                 cycle_navigation = true,
-                -- enable default C-hjkl keybindings in normal mode
-                enable_default_keybindings = true,
+                -- keybindings are defined in lua/config/keymaps.lua so that
+                -- they are applied after LazyVim's defaults and are not
+                -- silently overridden by LazyVim's own <C-hjkl> mappings.
+                enable_default_keybindings = false,
             },
             resize = {
                 -- enable default M-hjkl keybindings in normal mode
