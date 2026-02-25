@@ -5,3 +5,8 @@
 # sourcing (e.g. in machines.sh).  Default is $HOME/.local, which is the
 # XDG user-local prefix used by the install_neovim bootstrap in bin/dotfiles.
 export PATH="${NVIM_INSTALL_DIR:-${HOME}/.local}/bin:${PATH}"
+
+# Load nvm (Node Version Manager) and put its active node on PATH.
+# nvm is installed by the install_node bootstrap in bin/dotfiles.
+export NVM_DIR="${HOME}/.nvm"
+[ -s "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"

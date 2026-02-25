@@ -57,8 +57,42 @@ if [[ ! -x "${HOME}/.tmux/plugins/tpm/tpm" ]]; then
     git clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
 fi
 
+#######################################
+# Install Node.js via nvm (Node Version Manager).
+# nvm is used instead of a direct binary download because it handles
+# architecture differences (arm64 vs x86_64 on macOS) automatically and
+# makes it easy to manage Node versions later.
+# https://github.com/nvm-sh/nvm
+#######################################
+install_node() {
+    local nvm_dir="${NVM_DIR:-${HOME}/.nvm}"
+
+    if command -v node &>/dev/null; then
+        e_success "node.js already installed ($(node --version))"
+        return
+    fi
+
+    e_header "Installing nvm..."
+    if [[ ! -s "${nvm_dir}/nvm.sh" ]]; then
+        curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
+    fi
+
+    # Load nvm into the current shell session so we can use it immediately.
+    export NVM_DIR="${nvm_dir}"
+    source "${nvm_dir}/nvm.sh"
+
+    e_header "Installing Node.js LTS via nvm..."
+    nvm install --lts
+    nvm use --lts
+
+    e_success "node.js $(node --version) installed via nvm"
+}
+
 # install neovim if not already present
 install_neovim
+
+# install Node.js if not already present (required for GitHub Copilot)
+install_node
 
 #######################################
 #
