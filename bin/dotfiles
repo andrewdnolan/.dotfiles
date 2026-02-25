@@ -64,15 +64,16 @@ install_neovim
 #
 #######################################
 archive_dotfile(){
-    
+
     # create the archive directory to copy dotfiles into
     backupdir="${HOME}/dotfiles_$(date +%Y-%m-%d_%H:%M:%S)" && mkdir $backupdir
-    
+
     # copy the dotfiles to the archive direcotry
     find $HOME -maxdepth 1 \( -name ".bashrc" \
                            -o -name ".bash_profile" \
                            -o -name ".vimrc" \
                            -o -name ".tmux.conf" \
+                           -o -name ".tmux/tmuxline.conf" \
                            -o -name ".gitconfig" \
                            -o -name ".gitignore" \) \
                            -exec cp {} $backupdir ";"
@@ -81,10 +82,10 @@ archive_dotfile(){
     if [[ -e "${HOME}/.config/nvim" ]]; then
         cp -r "${HOME}/.config/nvim" "${backupdir}/nvim"
     fi
-    
+
     # tar the acrhive dir
     tar -cvf "${backupdir}.tar" $backupdir
-    # clean up 
+    # clean up
     rm -rf $backupdir
 
     e_success "Exisiting dotfiles archived in $(tput setaf 7)${backupdir}.tar$(tput sgr0)"
@@ -105,6 +106,9 @@ mirrorfiles() {
         rm -rf "${HOME}/.vim"
     fi
 
+    mkdir -p "${HOME}/.tmux"
+    mkdir -p "${HOME}/.config"
+
     # Create the necessary symbolic links between the `.dotfiles` and `HOME`
     # directory. The `bash_profile` sources other files directly from the
     # `.dotfiles` repository.
@@ -114,10 +118,10 @@ mirrorfiles() {
     link "git/gitignore"      ".gitignore"
     link "vim/vimrc"          ".vimrc"
     link "tmux/tmux.conf"     ".tmux.conf"
+    link "tmux/tmuxline.conf" ".tmux/tmuxline.conf"
+    # Symlink the whole neovim config directory
+    link "nvim"               ".config/nvim"
 
-    # Symlink neovim config directory
-    mkdir -p "${HOME}/.config"
-    link "nvim" ".config/nvim"
 
     e_success "Dotfiles installation complete!"
 }
@@ -126,11 +130,11 @@ e_header "Installing dotfiles..."
 
 seek_confirmation "Warning: This step may overwrite your existing dotfiles."
 
-if is_confirmed; then  
+if is_confirmed; then
     archive_dotfile
     mirrorfiles
     source ${HOME}/.bash_profile
-else 
+else
     printf "Aborting...\n"
     exit 1
 fi
