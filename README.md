@@ -23,7 +23,7 @@ cli tools. The installed packages end up in: `$USER/.local/share/mise/installs`
 - [`ripgrep`](https://github.com/BurntSushi/ripgrep) — Blazing-fast recursive grep with smart defaults and `.gitignore` support.[^*]
 - [`tmux`](https://github.com/tmux/tmux) — Terminal multiplexer for managing multiple sessions in one window.
 
-[^*]These are optional, but very useful, dependencies of `neovim`
+[^*]: These are optional, but very useful, dependencies of `neovim`
 
 **Todo**:
   - [ ] bootstrap OSX terminal settings  
