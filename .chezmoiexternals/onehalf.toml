@@ -1,0 +1,5 @@
+[".config/onehalf"]
+type = "archive"
+url = "https://github.com/sonph/onehalf/archive/refs/heads/master.zip"
+stripComponents = 2
+include = ["**/terminal/OneHalf*.terminal"]

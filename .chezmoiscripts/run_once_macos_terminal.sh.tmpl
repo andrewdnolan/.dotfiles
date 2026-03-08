@@ -1,0 +1,12 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+open -g /Users/anolan/.config/onehalf/OneHalfDark.terminal || true
+sleep 1
+open -g /Users/anolan/.config/onehalf/OneHalfLight.terminal || true
+sleep 1
+
+defaults write com.apple.Terminal "Default Window Settings" -string "OneHalfDark"
+defaults write com.apple.Terminal "Startup Window Settings" -string "OneHalfDark"
+{{ end -}}
