@@ -54,6 +54,13 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 # Configuration for DoD's HPCMP Kerberos Kit
 export PATH="/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
 export KRB5_CONFIG=/etc/krb5.conf
+
+# Git tab-completion (provided by macOS Command Line Tools)
+_git_comp="/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash"
+if [[ -f "$_git_comp" ]]; then
+  source "$_git_comp"
+fi
+unset _git_comp
 {{- end }}
 
 # SLURM aliases

@@ -27,5 +27,6 @@ cli tools. The installed packages end up in: `$USER/.local/share/mise/installs`
 
 **Todo**:
   - [ ] bootstrap OSX terminal settings  
-  - [ ] bash / git autocomplete on OSX  
+  - [x] git autocomplete on OSX  
+  - [ ] bash autocomplete on OSX  
   - [ ] linter for this repo  
