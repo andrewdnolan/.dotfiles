@@ -1,0 +1,104 @@
+export HISTFILESIZE=1000
+export HISTSIZE=1000
+export HISTTIMEFORMAT="%h %d %H:%M:%S "
+export HISTIGNORE="history*:!*history*:clear:git status:date"
+
+if [[ -d $HOME/.local/bin ]] ; then
+  export PATH=$HOME/.local/bin:$PATH
+fi
+
+if command -v mise > /dev/null ; then
+  eval "$(mise activate bash)"
+fi
+
+# (neo)vim
+if command -v nvim > /dev/null ; then
+  export EDITOR="nvim"
+  export VISUAL="nvim"
+elif command -v vim > /dev/null ; then
+  export EDITOR="vim"
+  export VISUAL="vim"
+fi
+
+if command -v lsd > /dev/null ; then
+  alias ls="lsd"
+  alias ll="ls -lgh"
+  alias la='ls -a'
+  alias lla='ls -lgha'
+  alias lt='ls --tree'
+fi
+
+# enable fzf autocompletion and key-bindings if found
+if command -v fzf > /dev/null ; then
+  eval "$(fzf --bash)"
+fi
+
+# use bat instead of cat
+if command -v bat > /dev/null ; then
+  alias cat="bat"
+fi
+
+# Easier navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ~="cd ~"
+alias -- -="cd -"
+
+# Make grep highlight search string in red
+alias grep="grep --color"
+
+{{- if eq .chezmoi.os "darwin" }}
+# Suppress bash deprecation warning
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Configuration for DoD's HPCMP Kerberos Kit
+export PATH="/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
+export KRB5_CONFIG=/etc/krb5.conf
+
+# Git tab-completion (provided by macOS Command Line Tools)
+_git_comp="/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash"
+if [[ -f "$_git_comp" ]]; then
+  source "$_git_comp"
+fi
+unset _git_comp
+
+_macos_funcs="${XDG_CONFIG_HOME:-$HOME/.config}/bash/macos.bash"
+if [[ -f "$_macos_funcs" ]]; then
+  source "$_macos_funcs"
+fi
+unset _macos_funcs
+{{- end }}
+
+# SLURM aliases
+if command -v squeue > /dev/null ; then
+    squeue_format=(%8u %.7a %.4D %.10P %8i %.2t %.10r %.10M %.10l %.8Q %j)
+    alias sqa="squeue -o \"${squeue_format[@]}\" --sort=P,-t,-p"
+    alias sq="sqa -u $USER"
+    unset squeue_format
+fi
+
+_bash_prompt="${XDG_CONFIG_HOME:-$HOME/.config}/bash/prompt.bash"
+if [[ -f "$_bash_prompt" ]]; then
+    source "$_bash_prompt"
+fi
+unset _bash_profile
+
+# Set miniforge installation directory
+MINIFORGE_HOME="${HOME}/miniforge3"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed manually for version control !!
+if [[ -d "$MINIFORGE_HOME" ]]; then
+  __conda_setup="$("$MINIFORGE_HOME/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+  else
+    if [ -f "$MINIFORGE_HOME/etc/profile.d/conda.sh" ]; then
+      . "$MINIFORGE_HOME/etc/profile.d/conda.sh"
+    else
+      export PATH="$MINIFORGE_HOME/bin:$PATH"
+    fi
+  fi
+  unset __conda_setup
+fi
+# <<< conda initialize <<<
