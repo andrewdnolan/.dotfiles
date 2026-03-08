@@ -17,6 +17,9 @@ call vundle#begin()
 Plugin 'christoomey/vim-tmux-navigator'
 " Onehalf theme
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+
 " have vim try to recognize file types
 filetype plugin indent on    " required
 " turn on syntax highlighting
