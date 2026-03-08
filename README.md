@@ -10,8 +10,11 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply andrewdnolan/.dotfiles --ss
 
 ## Included tools
 I use [`mise`](https://mise.jdx.dev/) to bootstrap the installation of various
-cli tools. The installed packages end up in: `$USER/.local/share/mise/installs`
-. Currently I'm using:
+cli tools. The installed packages end up in: 
+```
+$USER/.local/share/mise/installs
+```
+Currently I'm using:
 
 - [`bat`](https://github.com/sharkdp/bat) — A `cat` clone with syntax highlighting and Git integration.
 - [`github/copilot-cli`](https://github.com/github/copilot-cli) — GitHub Copilot in the terminal for AI-powered CLI assistance.
