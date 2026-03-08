@@ -4,9 +4,35 @@ System setup and dotfiles using [`chezmoi`](https://www.chezmoi.io/) and [`mise`
 
 ## Setting up new machines
 
-```{bash}
+```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply andrewdnolan/.dotfiles --ssh
 ```
+
+<details>
+<summary>If you have an older version of this dotfile repo that you would like to back up</summary>
+
+```bash
+# create the archive directory to copy dotfiles into
+backupdir="${HOME}/dotfiles_$(date +%Y-%m-%d_%H:%M:%S)" && mkdir $backupdir
+
+# copy the dotfiles to the archive direcotry
+find $HOME -maxdepth 1 \( -name ".bashrc" \
+                       -o -name ".bash_profile" \
+                       -o -name ".vimrc" \
+                       -o -name ".tmux.conf" \
+                       -o -name ".gitconfig" \
+                       -o -name ".gitignore" \) \
+                       -exec cp {} $backupdir ";"
+
+# tar the acrhive dir
+tar -cvf "${backupdir}.tar" $backupdir
+# clean up
+rm -rf $backupdir
+
+echo "Exisiting dotfiles archived in $(tput setaf 7)${backupdir}.tar"
+```
+
+</details>
 
 ## Included tools
 I use [`mise`](https://mise.jdx.dev/) to bootstrap the installation of various
