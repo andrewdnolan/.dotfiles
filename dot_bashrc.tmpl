@@ -61,6 +61,12 @@ if [[ -f "$_git_comp" ]]; then
   source "$_git_comp"
 fi
 unset _git_comp
+
+_macos_funcs="${XDG_CONFIG_HOME:-$HOME/.config}/bash/macos.bash"
+if [[ -f "$_macos_funcs" ]]; then
+  source "$_macos_funcs"
+fi
+unset _macos_funcs
 {{- end }}
 
 # SLURM aliases

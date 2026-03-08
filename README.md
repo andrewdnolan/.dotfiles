@@ -56,7 +56,7 @@ Currently I'm using:
 
 **Todo**:
   - [x] `conda` sourcing  
-  - [ ] `sshproxy` on OSX for signing onto perlmutter  
+  - [x] `sshproxy` on OSX for signing onto perlmutter  
   - [ ] check for local changes on all machines before switching  
   - [ ] bootstrap OSX terminal settings  
   - [x] git autocomplete on OSX  
