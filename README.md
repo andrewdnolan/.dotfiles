@@ -55,7 +55,10 @@ Currently I'm using:
 [^*]: These are optional, but very useful, dependencies of `neovim`
 
 **Todo**:
+  - [x] `conda` sourcing  
+  - [ ] `sshproxy` on OSX for signing onto perlmutter  
+  - [ ] check for local changes on all machines before switching  
   - [ ] bootstrap OSX terminal settings  
   - [x] git autocomplete on OSX  
   - [ ] bash autocomplete on OSX  
-  - [ ] linter for this repo  
+  - [ ] pre-commit hooks. See [example](https://gitlab.com/ohspl/oss/chezmoi/dotfiles/-/blob/main/.pre-commit-config.yaml?ref_type=heads)  

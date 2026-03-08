@@ -76,3 +76,23 @@ if [[ -f "$_bash_prompt" ]]; then
     source "$_bash_prompt"
 fi
 unset _bash_profile
+
+# Set miniforge installation directory
+MINIFORGE_HOME="${HOME}/miniforge3"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed manually for version control !!
+if [[ -d "$MINIFORGE_HOME" ]]; then
+  __conda_setup="$("$MINIFORGE_HOME/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+  else
+    if [ -f "$MINIFORGE_HOME/etc/profile.d/conda.sh" ]; then
+      . "$MINIFORGE_HOME/etc/profile.d/conda.sh"
+    else
+      export PATH="$MINIFORGE_HOME/bin:$PATH"
+    fi
+  fi
+  unset __conda_setup
+fi
+# <<< conda initialize <<<
