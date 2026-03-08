@@ -45,7 +45,7 @@ alias ~="cd ~"
 alias -- -="cd -"
 
 # Make grep highlight search string in red
-export GREP_OPTIONS='--color=auto'
+alias grep="grep --color"
 
 {{- if eq .chezmoi.os "darwin" }}
 # Suppress bash deprecation warning
