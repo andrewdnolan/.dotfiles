@@ -1,0 +1,6 @@
+# On Cray PE HPC systems the default `cc` compiler wrapper injects MPI,
+# darshan, and CUDA libraries into every binary at link time.  Pinning the
+# linker to the system GCC prevents those unwanted RPATH/NEEDED entries in
+# user tools compiled via `cargo install` (e.g. lsd, ripgrep, etc.).
+[target.x86_64-unknown-linux-gnu]
+linker = "/usr/bin/gcc"

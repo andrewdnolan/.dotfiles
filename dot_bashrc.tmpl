@@ -9,6 +9,31 @@ fi
 
 if command -v mise > /dev/null ; then
   eval "$(mise activate bash)"
+  # mise's PROMPT_COMMAND hook rebuilds PATH on every prompt, which can
+  # demote an active conda/pixi env bin below system paths.  This hook runs
+  # after mise's and moves $CONDA_PREFIX/bin back to the front for any active
+  # environment — pixi (PIXI_IN_SHELL=1) or conda (CONDA_SHLVL>0), but NOT
+  # the base conda env which should not shadow the system python.
+  _conda_env_path_hook() {
+    [[ -z "${CONDA_PREFIX:-}" ]] && return
+    # Fire for pixi envs (PIXI_IN_SHELL) OR non-base conda envs (CONDA_SHLVL>0
+    # and CONDA_DEFAULT_ENV not "base").  pixi may leave CONDA_DEFAULT_ENV
+    # unset, so treat empty as non-base.
+    local _is_pixi="${PIXI_IN_SHELL:-}"
+    local _conda_shlvl="${CONDA_SHLVL:-0}"
+    local _conda_env="${CONDA_DEFAULT_ENV:-}"
+    if [[ -z "${_is_pixi}" ]]; then
+      # Pure conda: skip if base env or no active env level
+      [[ "${_conda_shlvl}" -le 0 || "${_conda_env}" == "base" ]] && return
+    fi
+    local _env_bin="${CONDA_PREFIX}/bin"
+    [[ "${PATH}" == "${_env_bin}:"* ]] && return
+    # Remove any existing occurrence(s) then prepend to avoid accumulation.
+    local _p="${PATH//${_env_bin}:}"
+    _p="${_p//:${_env_bin}}"
+    export PATH="${_env_bin}:${_p}"
+  }
+  PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND}; }_conda_env_path_hook"
 fi
 
 # (neo)vim
