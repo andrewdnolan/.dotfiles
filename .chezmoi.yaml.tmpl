@@ -23,6 +23,16 @@ data:
   platform: {{ $platform | quote }}
   needs_spack: {{ $needs_spack }}
 
+  spack_compilers:
+    lcrc:
+      version: "13.3.0"
+      spec: "gcc@13.3.0 languages='c,c++,fortran'"
+      module: "gcc/13.3.0-nj5wdke"
+      prefix: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke"
+      c: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gcc"
+      cxx: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/g++"
+      fortran: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gfortran"
+
 git:
   autoCommit: true
   commitMessageTemplate: '{{"{{"}} promptString "Commit message" {{"}}"}}'

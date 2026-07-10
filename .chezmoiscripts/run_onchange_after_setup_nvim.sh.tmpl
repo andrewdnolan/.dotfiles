@@ -1,0 +1,26 @@
+#!/bin/bash
+# environment: {{ include "dot_config/spack/environments/chezmoi-tools/spack.yaml.tmpl" | sha256sum }}
+
+set -e
+
+{{- if .needs_spack }}
+
+SPACK_ROOT="{{ .chezmoi.homeDir }}/.local/share/spack"
+SPACK_ENV="{{ .chezmoi.homeDir }}/.config/spack/environments/chezmoi-tools"
+BIN_DIR="{{ .chezmoi.homeDir }}/.local/bin"
+
+source "${SPACK_ROOT}/share/spack/setup-env.sh"
+
+mkdir -p "$BIN_DIR"
+
+spack env activate -d "$SPACK_ENV"
+spack concretize -f
+spack install
+
+NVIM_PREFIX="$(spack location -i neovim)"
+TREE_SITTER_PREFIX="$(spack location -i tree-sitter)"
+
+ln -sfn "$NVIM_PREFIX/bin/nvim" "$BIN_DIR/nvim"
+ln -sfn "$TREE_SITTER_PREFIX/bin/tree-sitter" "$BIN_DIR/tree-sitter"
+
+{{- end }}
