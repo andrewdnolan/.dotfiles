@@ -1,0 +1,21 @@
+{{- $use_mise_nvim := not .needs_spack -}}
+
+[tools]
+bat = "0.26.1"
+"aqua:github/copilot-cli" = "latest"
+fd = "10.3.0"
+fzf = "0.70.0"
+"cargo:lsd" = "1.2.0"
+node = "25.8.0"
+{{- if $use_mise_nvim }}
+neovim = "0.11.6"
+{{- end }}
+ripgrep = "15.1.0"
+rust = "latest"
+tmux = "latest"
+
+[settings]
+experimental = true
+lockfile = true
+pin = true
+

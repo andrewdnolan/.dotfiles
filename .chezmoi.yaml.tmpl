@@ -1,0 +1,29 @@
+{{- /* Platform detection — single source of truth for all templates.
+       Runs during `chezmoi init` and populates the data: section of the
+       config file.  All other templates access .platform, .needs_spack, etc. */ -}}
+
+{{- $hostname := output "hostname" "-d" | trim -}}
+{{- $os := .chezmoi.os -}}
+{{- $platform := "unknown" -}}
+
+{{- if (and (eq $hostname "lanl.gov") (eq $os "darwin")) -}}
+    {{- $platform = "lanl_macbook" -}}
+{{- else if eq $hostname "lcrc.anl.gov" -}}
+    {{- $platform = "lcrc" -}}
+{{- else if eq $hostname "ccs.ornl.gov" -}}
+    {{- $platform = "olcf" -}}
+{{- else if contains "nersc.gov" $hostname -}}
+    {{- $platform = "nersc" -}}
+{{- end -}}
+
+{{- $spack_platforms := list "lcrc" "olcf" "nersc" -}}
+{{- $needs_spack := has $platform $spack_platforms -}}
+
+data:
+  platform: {{ $platform | quote }}
+  needs_spack: {{ $needs_spack }}
+
+git:
+  autoCommit: true
+  commitMessageTemplate: '{{"{{"}} promptString "Commit message" {{"}}"}}'
+  autoPush: false

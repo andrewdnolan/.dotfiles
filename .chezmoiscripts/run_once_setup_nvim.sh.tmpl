@@ -1,0 +1,108 @@
+#!/bin/bash
+# Setup nvim based on machine platform
+# For spack machines: compiles nvim and extracts standalone binary to ~/.local/bin
+# This avoids needing spack environment loaded and prevents project spack envs from clashing
+
+set -euo pipefail
+
+NEEDS_SPACK={{ .needs_spack }}
+PLATFORM="{{ .platform }}"
+HOME_DIR="{{ .chezmoi.homeDir }}"
+SPACK_ROOT="${HOME_DIR}/.local/share/spack"
+NVIM_BIN_DIR="${HOME_DIR}/.local/bin"
+
+echo "=== NeoVim Setup ==="
+echo "Platform: $PLATFORM"
+echo "Installation method: $([ "$NEEDS_SPACK" = true ] && echo "spack" || echo "mise")"
+
+# Ensure bin directory exists
+mkdir -p "$NVIM_BIN_DIR"
+
+if [ "$NEEDS_SPACK" = true ]; then
+  echo "Setting up standalone neovim via spack..."
+  
+  # Spack is installed as a chezmoi external at ~/.local/share/spack
+  if [ ! -d "$SPACK_ROOT" ]; then
+    echo "ERROR: Spack not found at $SPACK_ROOT"
+    echo "Re-run 'chezmoi apply' to download it via externals."
+    exit 1
+  fi
+  
+  # Source spack for this script only (doesn't affect bashrc)
+  source "${SPACK_ROOT}/share/spack/setup-env.sh"
+  
+  # Use a dedicated spack environment for chezmoi-managed tools
+  # This isolates config from development environments
+  SPACK_ENV_DIR="${HOME_DIR}/.local/share/spack-envs/chezmoi-tools"
+  if [ ! -d "$SPACK_ENV_DIR" ]; then
+    echo "Creating isolated spack environment for chezmoi tools..."
+    spack env create -d "$SPACK_ENV_DIR"
+  fi
+  spack env activate "$SPACK_ENV_DIR"
+  
+  # Allow spack to build gcc (needed for node-js which tree-sitter+cli requires)
+  spack config add "packages:gcc:buildable:true"
+  
+  # Auto-detect system packages so spack doesn't rebuild them
+  echo "Detecting system packages..."
+  spack external find --not-buildable
+  
+  # Install neovim, tree-sitter CLI, and a modern gcc (needed to compile node-js for tree-sitter)
+  spack add neovim
+  spack add tree-sitter+cli
+  spack add gcc
+  echo "Building neovim and tree-sitter with spack..."
+  spack install
+  
+  # Extract nvim binary to ~/.local/bin for standalone use
+  SPACK_NVIM_PATH=$(spack location -i neovim)
+  if [ -z "$SPACK_NVIM_PATH" ]; then
+    echo "ERROR: Failed to locate spack-compiled neovim"
+    exit 1
+  fi
+  
+  if [ ! -x "$SPACK_NVIM_PATH/bin/nvim" ]; then
+    echo "ERROR: nvim binary not found at $SPACK_NVIM_PATH/bin/nvim"
+    exit 1
+  fi
+  
+  # Copy nvim binary to ~/.local/bin (will be in PATH automatically)
+  echo "Extracting binaries to $NVIM_BIN_DIR..."
+  cp "$SPACK_NVIM_PATH/bin/nvim" "$NVIM_BIN_DIR/nvim"
+  chmod +x "$NVIM_BIN_DIR/nvim"
+  
+  # Copy tree-sitter CLI (needed by nvim-treesitter to compile parsers)
+  SPACK_TS_PATH=$(spack location -i tree-sitter)
+  if [ -x "$SPACK_TS_PATH/bin/tree-sitter" ]; then
+    cp "$SPACK_TS_PATH/bin/tree-sitter" "$NVIM_BIN_DIR/tree-sitter"
+    chmod +x "$NVIM_BIN_DIR/tree-sitter"
+    echo "✓ tree-sitter CLI installed to: $NVIM_BIN_DIR/tree-sitter"
+  else
+    echo "⚠ tree-sitter CLI not found at $SPACK_TS_PATH/bin/tree-sitter"
+  fi
+  
+  # Create a marker file noting spack version for reference
+  echo "$SPACK_NVIM_PATH" > "$NVIM_BIN_DIR/.nvim_spack_path"
+  
+  echo "✓ NeoVim binary installed to: $NVIM_BIN_DIR/nvim"
+  echo "  (Built from spack at: $SPACK_NVIM_PATH)"
+  echo "  Note: This binary does NOT require spack environment to be loaded"
+  
+else
+  echo "NeoVim will be installed via mise..."
+  
+  # Verify mise is available and will install neovim
+  if command -v mise &> /dev/null; then
+    mise list neovim 2>/dev/null && echo "✓ Neovim is configured in mise" || echo "⚠ Neovim not configured in mise"
+  else
+    echo "⚠ mise not found in PATH (will be set up in run_onchange_after_install_packages.sh)"
+  fi
+  
+  # Remove any spack-installed nvim to avoid conflicts
+  if [ -f "$NVIM_BIN_DIR/nvim" ] && [ -f "$NVIM_BIN_DIR/.nvim_spack_path" ]; then
+    echo "Removing previously spack-installed nvim..."
+    rm -f "$NVIM_BIN_DIR/nvim" "$NVIM_BIN_DIR/.nvim_spack_path"
+  fi
+fi
+
+echo "=== NeoVim Setup Complete ==="

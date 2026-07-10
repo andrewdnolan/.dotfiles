@@ -1,0 +1,6 @@
+{{- if .needs_spack }}
+[".local/share/spack"]
+    type = "archive"
+    url = "https://github.com/spack/spack/releases/download/v1.2.1/spack-1.2.1.tar.gz"
+    stripComponents = 1
+{{- end }}
