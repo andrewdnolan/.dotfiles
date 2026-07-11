@@ -38,19 +38,19 @@ data:
       neovim_provider: "mise"
 
       spack_paths:
-        install_base: "/home/ac.anolan/.local/share/spack/stores"
-        temporary_base: "/lcrc/group/e3sm/ac.anolan/spack_tmp"
+        install_base: "/global/cfs/cdirs/e3sm/anolan/spack/stores"
+        temporary_base: "/pscratch/sd/a/anolan/spack_tmp"
 
       machines:
         perlmutter:
           compiler:
-            version: "15.1.0"
-            spec: "gcc@15.1.0 languages='c,c++,fortran'"
-            module: "gcc/15.1.0"
-            prefix: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp"
-            c: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gcc"
-            cxx: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/g++"
-            fortran: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gfortran"
+            version: "14.3.0"
+            spec: "gcc@14.3.0 languages='c,c++,fortran'"
+            module: "gcc-native/14"
+            prefix: "/opt/cray/pe/gcc-native/14"
+            c: "/opt/cray/pe/gcc-native/14/bin/gcc"
+            cxx: "/opt/cray/pe/gcc-native/14/bin/g++"
+            fortran: "/opt/cray/pe/gcc-native/14/bin/gfortran"
 
     macos:
       needs_spack: false
