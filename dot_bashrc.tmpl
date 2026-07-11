@@ -7,13 +7,17 @@ if [[ -d $HOME/.local/bin ]] ; then
   export PATH=$HOME/.local/bin:$PATH
 fi
 
-{{- $system := includeTemplate "system.yaml" . | fromYaml }}
-{{- $platformConfig := index .platforms $system.platform }}
-{{- if $platformConfig.needs_spack }}
-if [[ -d "$HOME/.local/bin/{{ $system.machine }}" ]]; then
-  export PATH="$HOME/.local/bin/{{ $system.machine }}:$PATH"
+if [[ -f "$HOME/.config/bash/detect_machine.sh" ]]; then
+  source "$HOME/.config/bash/detect_machine.sh"
+
+  _machine="$(dotfiles_machine 2>/dev/null || true)"
+
+  if [[ -n "$_machine" && -d "$HOME/.local/bin/$_machine" ]]; then
+    export PATH="$HOME/.local/bin/$_machine:$PATH"
+  fi
+
+  unset _machine
 fi
-{{- end }}
 
 if command -v mise > /dev/null ; then
   eval "$(mise activate bash)"

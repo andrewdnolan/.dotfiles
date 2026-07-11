@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-{{- $system := includeTemplate "system.yaml" . | fromYaml -}}
-{{- $platformConfig := index .platforms $system.platform -}}
+{{ $system := includeTemplate "system.yaml" . | fromYaml }}
+{{ $platformConfig := index .platforms $system.platform }}
 
 # Platform: {{ $system.platform }}
 # Machine: {{ $system.machine }}
