@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-{{- $platformConfig := index .platforms .platform -}}
+{{- $system := includeTemplate "system.yaml" . | fromYaml -}}
+{{- $platformConfig := index .platforms $system.platform -}}
 
-# Platform: {{ .platform }}
-# Machine: {{ .machine }}
+# Platform: {{ $system.platform }}
+# Machine: {{ $system.machine }}
 # Spack environment hash: {{ includeTemplate "spack.yaml" . | sha256sum }}
 
 set -euo pipefail
@@ -12,11 +13,11 @@ set -euo pipefail
 
 SPACK_ROOT="{{ .chezmoi.homeDir }}/.local/share/spack"
 SPACK="${SPACK_ROOT}/bin/spack"
-SPACK_ENV="{{ .chezmoi.homeDir }}/.config/spack/environments/chezmoi-tools/{{ .machine }}"
-BIN_DIR="{{ .chezmoi.homeDir }}/.local/bin/{{ .machine }}"
+SPACK_ENV="{{ .chezmoi.homeDir }}/.config/spack/environments/chezmoi-tools/{{ $system.machine }}"
+BIN_DIR="{{ .chezmoi.homeDir }}/.local/bin/{{ $system.machine }}"
 
-INSTALL_ROOT={{ joinPath $platformConfig.spack_paths.install_base .machine | quote }}
-TEMPORARY_ROOT={{ joinPath $platformConfig.spack_paths.temporary_base .machine | quote }}
+INSTALL_ROOT={{ joinPath $platformConfig.spack_paths.install_base $system.machine | quote }}
+TEMPORARY_ROOT={{ joinPath $platformConfig.spack_paths.temporary_base $system.machine | quote }}
 
 mkdir -p \
     "${SPACK_ENV}" \

@@ -1,9 +1,10 @@
-{{- $platformConfig := index .platforms .platform -}}
-{{- $machineConfig := index $platformConfig.machines .machine -}}
+{{- $system := includeTemplate "system.yaml" . | fromYaml -}}
+{{- $platformConfig := index .platforms $system.platform -}}
+{{- $machineConfig := index $platformConfig.machines $system.machine -}}
 {{- $compiler := $machineConfig.compiler -}}
 
-{{- $installRoot := joinPath $platformConfig.spack_paths.install_base .machine -}}
-{{- $temporaryRoot := joinPath $platformConfig.spack_paths.temporary_base .machine -}}
+{{- $installRoot := joinPath $platformConfig.spack_paths.install_base $system.machine -}}
+{{- $temporaryRoot := joinPath $platformConfig.spack_paths.temporary_base $system.machine -}}
 
 spack:
   specs:

@@ -7,10 +7,11 @@ if [[ -d $HOME/.local/bin ]] ; then
   export PATH=$HOME/.local/bin:$PATH
 fi
 
-{{- $platformConfig := index .platforms .platform }}
+{{- $system := includeTemplate "system.yaml" . | fromYaml }}
+{{- $platformConfig := index .platforms $system.platform }}
 {{- if $platformConfig.needs_spack }}
-if [[ -d "$HOME/.local/bin/{{ .machine }}" ]]; then
-    export PATH="$HOME/.local/bin/{{ .machine }}:$PATH"
+if [[ -d "$HOME/.local/bin/{{ $system.machine }}" ]]; then
+  export PATH="$HOME/.local/bin/{{ $system.machine }}:$PATH"
 fi
 {{- end }}
 

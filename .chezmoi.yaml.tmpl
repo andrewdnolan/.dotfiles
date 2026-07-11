@@ -1,34 +1,4 @@
-{{- /* Platform detection — single source of truth for all templates.
-       Runs during `chezmoi init` and populates the data: section of the
-       config file.  All other templates access .platform, .needs_spack, etc. */ -}}
-
-{{- $hostname := .chezmoi.hostname | lower -}}
-{{- $domain := output "hostname" "-d" | trim | lower -}}
-
-{{- $platform := "unknown" -}}
-{{- $machine := "unknown" -}}
-
-{{- if eq $domain "lcrc.anl.gov" -}}
-  {{- $platform = "lcrc" -}}
-
-  {{- if hasPrefix "chr" $hostname -}}
-    {{- $machine = "chrysalis" -}}
-  {{- else if hasPrefix "ilog" $hostname -}}
-    {{- $machine = "improv" -}}
-  {{- end -}}
-
-{{- else if contains "nersc.gov" $domain -}}
-  {{- $platform = "nersc" -}}
-  {{- $machine = "perlmutter" -}}
-
-{{- else if eq .chezmoi.os "darwin" -}}
-  {{- $platform = "macos" -}}
-  {{- $machine = "macbook" -}}
-{{- end -}}
-
 data:
-  platform: {{ $platform | quote }}
-  machine: {{ $machine | quote }}
 
   platforms:
 
@@ -53,9 +23,9 @@ data:
 
         improv:
           compiler:
-            version: "15.1.0""
+            version: "15.1.0"
             spec: "gcc@15.1.0 languages='c,c++,fortran'"
-            module: "gcc/15.1.0""
+            module: "gcc/15.1.0"
             prefix: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp"
             c: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gcc"
             cxx: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/g++"
