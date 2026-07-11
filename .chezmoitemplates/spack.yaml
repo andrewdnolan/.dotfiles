@@ -1,0 +1,41 @@
+{{- $platformConfig := index .platforms .platform -}}
+{{- $machineConfig := index $platformConfig.machines .machine -}}
+{{- $compiler := $machineConfig.compiler -}}
+
+{{- $installRoot := joinPath $platformConfig.spack_paths.install_base .machine -}}
+{{- $temporaryRoot := joinPath $platformConfig.spack_paths.temporary_base .machine -}}
+
+spack:
+  specs:
+    - neovim %gcc@{{ $compiler.version }}
+    - tree-sitter+cli %gcc@{{ $compiler.version }}
+
+  config:
+    install_tree:
+      root: {{ $installRoot | quote }}
+
+    build_stage:
+      - {{ joinPath $temporaryRoot "stage" | quote }}
+
+    source_cache: {{ joinPath $temporaryRoot "cache/source" | quote }}
+    misc_cache: {{ joinPath $temporaryRoot "cache/misc" | quote }}
+
+  packages:
+    gcc:
+      externals:
+        - spec: {{ $compiler.spec | quote }}
+          prefix: {{ $compiler.prefix | quote }}
+          modules:
+            - {{ $compiler.module | quote }}
+          extra_attributes:
+            compilers:
+              c: {{ $compiler.c | quote }}
+              cxx: {{ $compiler.cxx | quote }}
+              fortran: {{ $compiler.fortran | quote }}
+      buildable: false
+
+  concretizer:
+    unify: true
+    reuse: true
+
+  view: false

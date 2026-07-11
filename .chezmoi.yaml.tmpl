@@ -2,36 +2,64 @@
        Runs during `chezmoi init` and populates the data: section of the
        config file.  All other templates access .platform, .needs_spack, etc. */ -}}
 
-{{- $hostname := output "hostname" "-d" | trim -}}
-{{- $os := .chezmoi.os -}}
+{{- $hostname := .chezmoi.hostname | lower -}}
+{{- $domain := output "hostname" "-d" | trim | lower -}}
+
 {{- $platform := "unknown" -}}
+{{- $machine := "unknown" -}}
 
-{{- if (and (eq $hostname "lanl.gov") (eq $os "darwin")) -}}
-    {{- $platform = "lanl_macbook" -}}
-{{- else if eq $hostname "lcrc.anl.gov" -}}
-    {{- $platform = "lcrc" -}}
-{{- else if eq $hostname "ccs.ornl.gov" -}}
-    {{- $platform = "olcf" -}}
-{{- else if contains "nersc.gov" $hostname -}}
-    {{- $platform = "nersc" -}}
+{{- if eq $domain "lcrc.anl.gov" -}}
+  {{- $platform = "lcrc" -}}
+
+  {{- if hasPrefix "chr" $hostname -}}
+    {{- $machine = "chrysalis" -}}
+  {{- else if hasPrefix "ilog" $hostname -}}
+    {{- $machine = "improv" -}}
+  {{- end -}}
+
+{{- else if contains "nersc.gov" $domain -}}
+  {{- $platform = "nersc" -}}
+  {{- $machine = "perlmutter" -}}
+
+{{- else if eq .chezmoi.os "darwin" -}}
+  {{- $platform = "macos" -}}
+  {{- $machine = "macbook" -}}
 {{- end -}}
-
-{{- $spack_platforms := list "lcrc" "olcf" "nersc" -}}
-{{- $needs_spack := has $platform $spack_platforms -}}
 
 data:
   platform: {{ $platform | quote }}
-  needs_spack: {{ $needs_spack }}
+  machine: {{ $machine | quote }}
 
-  spack_compilers:
+  platforms:
+
     lcrc:
-      version: "13.3.0"
-      spec: "gcc@13.3.0 languages='c,c++,fortran'"
-      module: "gcc/13.3.0-nj5wdke"
-      prefix: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke"
-      c: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gcc"
-      cxx: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/g++"
-      fortran: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gfortran"
+
+      needs_spack: true
+
+      spack_paths:
+        install_base: "/home/ac.anolan/.local/share/spack/stores"
+        temporary_base: "/lcrc/group/e3sm/ac.anolan/spack_tmp"
+
+      machines:
+        chrysalis:
+          compiler:
+            version: "13.3.0"
+            spec: "gcc@13.3.0 languages='c,c++,fortran'"
+            module: "gcc/13.3.0-nj5wdke"
+            prefix: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke"
+            c: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gcc"
+            cxx: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/g++"
+            fortran: "/gpfs/fs1/soft/chrysalis/spack/opt/spack/linux-centos8-x86_64/gcc-9.3.0/gcc-13.3.0-nj5wdke/bin/gfortran"
+
+        improv:
+          compiler:
+            version: "15.1.0""
+            spec: "gcc@15.1.0 languages='c,c++,fortran'"
+            module: "gcc/15.1.0""
+            prefix: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp"
+            c: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gcc"
+            cxx: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/g++"
+            fortran: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gfortran"
 
 git:
   autoCommit: true

@@ -7,6 +7,13 @@ if [[ -d $HOME/.local/bin ]] ; then
   export PATH=$HOME/.local/bin:$PATH
 fi
 
+{{- $platformConfig := index .platforms .platform }}
+{{- if $platformConfig.needs_spack }}
+if [[ -d "$HOME/.local/bin/{{ .machine }}" ]]; then
+    export PATH="$HOME/.local/bin/{{ .machine }}:$PATH"
+fi
+{{- end }}
+
 if command -v mise > /dev/null ; then
   eval "$(mise activate bash)"
   # mise's PROMPT_COMMAND hook rebuilds PATH on every prompt, which can
