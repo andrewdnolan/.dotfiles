@@ -1,4 +1,5 @@
-{{- $use_mise_nvim := not .needs_spack -}}
+{{- $system := includeTemplate "system.yaml" . | fromYaml -}}
+{{- $platformConfig := index .platforms $system.platform -}}
 
 [tools]
 bat = "0.26.1"
@@ -7,7 +8,7 @@ fd = "10.3.0"
 fzf = "0.70.0"
 "cargo:lsd" = "1.2.0"
 node = "25.8.0"
-{{- if $use_mise_nvim }}
+{{- if eq $platformConfig.neovim_provider "mise" }}
 neovim = "0.11.6"
 {{- end }}
 ripgrep = "15.1.0"

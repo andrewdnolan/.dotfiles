@@ -5,6 +5,7 @@ data:
     lcrc:
 
       needs_spack: true
+      neovim_provider: "spack"
 
       spack_paths:
         install_base: "/home/ac.anolan/.local/share/spack/stores"
@@ -31,6 +32,35 @@ data:
             cxx: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/g++"
             fortran: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gfortran"
 
+    nersc:
+
+      needs_spack: true
+      neovim_provider: "mise"
+
+      spack_paths:
+        install_base: "/home/ac.anolan/.local/share/spack/stores"
+        temporary_base: "/lcrc/group/e3sm/ac.anolan/spack_tmp"
+
+      machines:
+        perlmutter:
+          compiler:
+            version: "15.1.0"
+            spec: "gcc@15.1.0 languages='c,c++,fortran'"
+            module: "gcc/15.1.0"
+            prefix: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp"
+            c: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gcc"
+            cxx: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/g++"
+            fortran: "/gpfs/fs1/soft/improv/software/spack-built/linux-rhel8-zen/gcc-8.5.0/gcc-15.1.0-nm36njp/bin/gfortran"
+
+    macos:
+      needs_spack: false
+      neovim_provider: "mise"
+      machines: {}
+
+    unknown:
+      needs_spack: false
+      neovim_provider: "mise"
+      machines: {}
 git:
   autoCommit: true
   commitMessageTemplate: '{{"{{"}} promptString "Commit message" {{"}}"}}'
