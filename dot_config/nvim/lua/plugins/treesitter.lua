@@ -15,6 +15,7 @@ return {
         "gitattributes",
         "gitcommit",
         "gitignore",
+        "gotmpl",
         "jinja",
         "julia",
         "latex",

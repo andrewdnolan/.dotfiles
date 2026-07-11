@@ -27,3 +27,10 @@ vim.opt.shell = "bash"
 
 -- better FORTRAN syntax highlighting
 vim.g.fortran_fixed_source = 0
+
+-- have chezmoi go templates recognized as such
+vim.filetype.add({
+  extension = {
+    tmpl = "gotmpl",
+  },
+})
