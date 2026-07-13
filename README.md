@@ -5,7 +5,8 @@ System setup and dotfiles using [`chezmoi`](https://www.chezmoi.io/) and [`mise`
 ## Setting up new machines
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply andrewdnolan/.dotfiles --ssh
+sh -c "$(curl -fsLS get.chezmoi.io)"  -- -b $HOME/.local/bin
+chezmoi init --apply andrewdnolan/.dotfiles --ssh
 ```
 
 <details>
@@ -41,6 +42,8 @@ To pull the changes from the remote repo and apply them in a single command, run
 chezmoi update
 ```
 This runs `git pull --autostash --rebase` in your source directory and then `chezmoi apply`.
+If you make edits to the `.chezmoi.yaml.tmpl` file you'll need to run
+`chezmoi init` before you can run `chezmoi apply`.
 
 Instead if you want to pull the latest changes from the remote repo and see what *would* change,
 without actually applying the changes, run:
@@ -69,6 +72,29 @@ Currently I'm using:
 - [`neovim`](https://github.com/neovim/neovim) — A highly extensible, modernized fork of Vim.
 - [`ripgrep`](https://github.com/BurntSushi/ripgrep) — Blazing-fast recursive grep with smart defaults and `.gitignore` support.[^*]
 - [`tmux`](https://github.com/tmux/tmux) — Terminal multiplexer for managing multiple sessions in one window.
+- [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) — Parser generator used by Neovim.
+
+> [!NOTE]
+> On selected HPC systems, Neovim and/or Tree-sitter are built with Spack.
+  Prebuilt binaries may require a newer glibc than the host provides.
+  Builds, environments, and executable links are isolated by machine.
+
+<details>
+<summary>Finding compiler paths for Spack</summary>
+
+```bash
+module load gcc/<version>
+
+command -v gcc
+command -v g++
+command -v gfortran
+dirname "$(dirname "$(command -v gcc)")"
+```
+
+Use these values for `c`, `cxx`, `fortran`, and `prefix` in `.chezmoi.yaml.tmpl`.
+
+</details>
+
 
 [^*]: These are optional, but very useful, dependencies of `neovim`
 
@@ -97,12 +123,10 @@ Then `git add/commit/push` the changes like you would any other repo, so that th
 
 **Checklist**:
   - [x] LANL macbook
-  - [ ] Chryslais
-    - need to build `nvim` from source, becuase `/lib64/libm.so.6` is too old.[^2]  
-  - [ ] Perlmutter
+  - [x] Chryslais
+  - [x] Perlmutter
   - [ ] Chicoma
   - [ ] Andes (OLCF)
   - [ ] Aurora / Polaris (ALCF)
   - [ ] Carpenter (DoD HPCMP)
 
-[^2]: chrysalis has `GLIBC 2.28`, whereas neovim needs `GLIBC >= 2.29`. 

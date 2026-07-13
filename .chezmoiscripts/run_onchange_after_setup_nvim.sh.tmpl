@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+{{ $system := includeTemplate "system.yaml" . | fromYaml }}
+{{ $platformConfig := index .platforms $system.platform }}
+
+# Platform: {{ $system.platform }}
+# Machine: {{ $system.machine }}
+# Spack environment hash: {{ includeTemplate "spack.yaml" . | sha256sum }}
+
+set -euo pipefail
+
+{{- if $platformConfig.needs_spack }}
+
+SPACK_ROOT="{{ .chezmoi.homeDir }}/.local/share/spack"
+SPACK="${SPACK_ROOT}/bin/spack"
+SPACK_ENV="{{ .chezmoi.homeDir }}/.config/spack/environments/chezmoi-tools/{{ $system.machine }}"
+BIN_DIR="{{ .chezmoi.homeDir }}/.local/bin/{{ $system.machine }}"
+
+INSTALL_ROOT={{ joinPath $platformConfig.spack_paths.install_base $system.machine | quote }}
+TEMPORARY_ROOT={{ joinPath $platformConfig.spack_paths.temporary_base $system.machine | quote }}
+
+mkdir -p \
+    "${SPACK_ENV}" \
+    "${BIN_DIR}" \
+    "${INSTALL_ROOT}" \
+    "${TEMPORARY_ROOT}/stage" \
+    "${TEMPORARY_ROOT}/cache/source" \
+    "${TEMPORARY_ROOT}/cache/misc"
+
+cat > "${SPACK_ENV}/spack.yaml" <<'EOF'
+{{ includeTemplate "spack.yaml" . }}
+EOF
+
+"${SPACK}" -e "${SPACK_ENV}" concretize
+"${SPACK}" -e "${SPACK_ENV}" install --fail-fast
+
+TREE_SITTER_PREFIX="$("${SPACK}" -e "${SPACK_ENV}" location -i tree-sitter)"
+ln -sfn "${TREE_SITTER_PREFIX}/bin/tree-sitter" "${BIN_DIR}/tree-sitter"
+
+{{- if eq $platformConfig.neovim_provider "spack" }}
+NVIM_PREFIX="$("${SPACK}" -e "${SPACK_ENV}" location -i neovim)"
+ln -sfn "${NVIM_PREFIX}/bin/nvim" "${BIN_DIR}/nvim"
+{{- end }}
+
+{{- end }}

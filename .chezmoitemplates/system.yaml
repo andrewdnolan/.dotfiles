@@ -1,0 +1,26 @@
+{{- $hostname := .chezmoi.hostname | lower -}}
+{{- $domain := output "hostname" "-d" | trim | lower -}}
+
+{{- $platform := "unknown" -}}
+{{- $machine := "unknown" -}}
+
+{{- if eq $domain "lcrc.anl.gov" -}}
+  {{- $platform = "lcrc" -}}
+
+  {{- if hasPrefix "chr" $hostname -}}
+    {{- $machine = "chrysalis" -}}
+  {{- else if hasPrefix "ilog" $hostname -}}
+    {{- $machine = "improv" -}}
+  {{- end -}}
+
+{{- else if contains "nersc.gov" $domain -}}
+  {{- $platform = "nersc" -}}
+  {{- $machine = "perlmutter" -}}
+
+{{- else if eq .chezmoi.os "darwin" -}}
+  {{- $platform = "macos" -}}
+  {{- $machine = "macbook" -}}
+{{- end -}}
+
+platform: {{ $platform | quote }}
+machine: {{ $machine | quote }}

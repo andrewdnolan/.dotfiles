@@ -7,6 +7,18 @@ if [[ -d $HOME/.local/bin ]] ; then
   export PATH=$HOME/.local/bin:$PATH
 fi
 
+if [[ -f "$HOME/.config/bash/detect_machine.sh" ]]; then
+  source "$HOME/.config/bash/detect_machine.sh"
+
+  _machine="$(dotfiles_machine 2>/dev/null || true)"
+
+  if [[ -n "$_machine" && -d "$HOME/.local/bin/$_machine" ]]; then
+    export PATH="$HOME/.local/bin/$_machine:$PATH"
+  fi
+
+  unset _machine
+fi
+
 if command -v mise > /dev/null ; then
   eval "$(mise activate bash)"
   # mise's PROMPT_COMMAND hook rebuilds PATH on every prompt, which can

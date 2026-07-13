@@ -1,0 +1,44 @@
+{{- $system := includeTemplate "system.yaml" . | fromYaml -}}
+{{- $platformConfig := index .platforms $system.platform -}}
+{{- $machineConfig := index $platformConfig.machines $system.machine -}}
+{{- $compiler := $machineConfig.compiler -}}
+
+{{- $installRoot := joinPath $platformConfig.spack_paths.install_base $system.machine -}}
+{{- $temporaryRoot := joinPath $platformConfig.spack_paths.temporary_base $system.machine -}}
+
+spack:
+  specs:
+{{- if eq $platformConfig.neovim_provider "spack" }}
+    - neovim %gcc@{{ $compiler.version }}
+{{- end }}
+    - tree-sitter+cli %gcc@{{ $compiler.version }}
+
+  config:
+    install_tree:
+      root: {{ $installRoot | quote }}
+
+    build_stage:
+      - {{ joinPath $temporaryRoot "stage" | quote }}
+
+    source_cache: {{ joinPath $temporaryRoot "cache/source" | quote }}
+    misc_cache: {{ joinPath $temporaryRoot "cache/misc" | quote }}
+
+  packages:
+    gcc:
+      externals:
+        - spec: {{ $compiler.spec | quote }}
+          prefix: {{ $compiler.prefix | quote }}
+          modules:
+            - {{ $compiler.module | quote }}
+          extra_attributes:
+            compilers:
+              c: {{ $compiler.c | quote }}
+              cxx: {{ $compiler.cxx | quote }}
+              fortran: {{ $compiler.fortran | quote }}
+      buildable: false
+
+  concretizer:
+    unify: true
+    reuse: true
+
+  view: false
