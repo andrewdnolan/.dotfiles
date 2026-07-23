@@ -4,7 +4,6 @@ data:
 
     lcrc:
 
-      needs_spack: true
       neovim_provider: "spack"
 
       spack_paths:
@@ -34,36 +33,18 @@ data:
 
     nersc:
 
-      needs_spack: true
       neovim_provider: "mise"
-
-      spack_paths:
-        install_base: "/global/cfs/cdirs/e3sm/anolan/spack/stores"
-        temporary_base: "/pscratch/sd/a/anolan/spack_tmp"
-
-      machines:
-        perlmutter:
-          compiler:
-            version: "14.3.0"
-            spec: "gcc@14.3.0 languages='c,c++,fortran'"
-            module: "gcc-native/14"
-            prefix: "/opt/cray/pe/gcc-native/14"
-            c: "/opt/cray/pe/gcc-native/14/bin/gcc"
-            cxx: "/opt/cray/pe/gcc-native/14/bin/g++"
-            fortran: "/opt/cray/pe/gcc-native/14/bin/gfortran"
+      machines: {}
 
     ornl:
-      needs_spack: false
       neovim_provider: "mise"
       machines: {}
 
     macos:
-      needs_spack: false
       neovim_provider: "mise"
       machines: {}
 
     unknown:
-      needs_spack: false
       neovim_provider: "mise"
       machines: {}
 git:

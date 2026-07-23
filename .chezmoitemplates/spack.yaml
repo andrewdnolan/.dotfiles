@@ -8,10 +8,7 @@
 
 spack:
   specs:
-{{- if eq $platformConfig.neovim_provider "spack" }}
     - neovim %gcc@{{ $compiler.version }}
-{{- end }}
-    - tree-sitter+cli %gcc@{{ $compiler.version }}
 
   config:
     install_tree:

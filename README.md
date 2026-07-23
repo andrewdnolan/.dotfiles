@@ -75,9 +75,12 @@ Currently I'm using:
 - [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) — Parser generator used by Neovim.
 
 > [!NOTE]
-> On selected HPC systems, Neovim and/or Tree-sitter are built with Spack.
-  Prebuilt binaries may require a newer glibc than the host provides.
-  Builds, environments, and executable links are isolated by machine.
+> Tree-sitter CLI is built locally through `mise`/`Cargo` on all platforms to
+> avoid incompatible prebuilt binaries on older systems.  
+>
+> On LCRC systems, Neovim is built with Spack because the mise-provided binary
+> is incompatible with the host glibc. Builds and executable links are isolated
+> by machine.
 
 <details>
 <summary>Finding compiler paths for Spack</summary>
@@ -92,6 +95,24 @@ dirname "$(dirname "$(command -v gcc)")"
 ```
 
 Use these values for `c`, `cxx`, `fortran`, and `prefix` in `.chezmoi.yaml.tmpl`.
+
+</details>
+
+<details>
+<summary>Remove a machine's Spack environment</summary>
+
+When a machine no longer uses Spack-managed tools, remove its environment and then garbage-collect packages that are not referenced by any remaining environment:
+
+```bash
+machine="$(chezmoi execute-template '{{- $system := includeTemplate "system.yaml" . | fromYaml -}}{{ $system.machine }}')"
+spack="$HOME/.local/share/spack/bin/spack"
+env="$HOME/.config/spack/environments/chezmoi-tools/$machine"
+
+"$spack" -e "$env" uninstall --all --yes-to-all
+rm -rf "$env"
+
+"$spack" gc --except-any-environment --yes-to-all
+```
 
 </details>
 

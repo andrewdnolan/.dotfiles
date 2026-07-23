@@ -5,7 +5,7 @@
 
 # Platform: {{ $system.platform }}
 # Machine: {{ $system.machine }}
-{{- if $platformConfig.needs_spack }}
+{{- if eq $platformConfig.neovim_provider "spack" }}
 # Spack environment hash: {{ includeTemplate "spack.yaml" . | sha256sum }}
 {{- else }}
 # Spack environment disabled
@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-{{- if $platformConfig.needs_spack }}
+{{- if eq $platformConfig.neovim_provider "spack" }}
 
 SPACK_ROOT="{{ .chezmoi.homeDir }}/.local/share/spack"
 SPACK="${SPACK_ROOT}/bin/spack"
@@ -38,12 +38,7 @@ EOF
 "${SPACK}" -e "${SPACK_ENV}" concretize
 "${SPACK}" -e "${SPACK_ENV}" install --fail-fast
 
-TREE_SITTER_PREFIX="$("${SPACK}" -e "${SPACK_ENV}" location -i tree-sitter)"
-ln -sfn "${TREE_SITTER_PREFIX}/bin/tree-sitter" "${BIN_DIR}/tree-sitter"
-
-{{- if eq $platformConfig.neovim_provider "spack" }}
 NVIM_PREFIX="$("${SPACK}" -e "${SPACK_ENV}" location -i neovim)"
 ln -sfn "${NVIM_PREFIX}/bin/nvim" "${BIN_DIR}/nvim"
-{{- end }}
 
 {{- end }}
