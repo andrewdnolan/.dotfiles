@@ -1,18 +1,15 @@
 #!/bin/bash
 # packages hash: {{ include "dot_config/mise/mise.toml.tmpl" | sha256sum }}
-# lockfile hash: {{ include "dot_config/mise/mise.lock" | sha256sum }}
 # cargo config hash: {{ include "dot_cargo/config.toml" | sha256sum }}
 
 set -euo pipefail
 
-MISE_BIN_PATH="{{ if $m := lookPath "mise" }}{{ $m }}{{ else if $l := lookPath (joinPath .chezmoi.homeDir ".local/bin/mise") }}{{ $l }}{{ else }}mise{{ end }}"
+MISE_BIN_PATH="{{ joinPath .chezmoi.homeDir ".local/bin/mise" }}"
 
-$MISE_BIN_PATH trust {{ .chezmoi.homeDir }}/.config/mise
-$MISE_BIN_PATH install
+if [[ ! -x "$MISE_BIN_PATH" ]]; then
+    echo "mise not found or not executable: $MISE_BIN_PATH" >&2
+    exit 1
+fi
 
-# Force reinstall all cargo-compiled tools whenever the cargo linker config
-# changes so they are rebuilt with the updated ~/.cargo/config.toml.
-while IFS= read -r _tool; do
-  $MISE_BIN_PATH install --force "$_tool"
-done < <("$MISE_BIN_PATH" list 2>/dev/null | awk '$1 ~ /^cargo:/ {print $1 "@" $2}')
-
+"$MISE_BIN_PATH" trust "{{ .chezmoi.homeDir }}/.config/mise"
+"$MISE_BIN_PATH" install
