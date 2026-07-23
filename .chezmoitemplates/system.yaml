@@ -17,6 +17,10 @@
   {{- $platform = "nersc" -}}
   {{- $machine = "perlmutter" -}}
 
+{{- else if eq $domain "frontier.olcf.ornl.gov" -}}
+  {{- $platform = "ornl" -}}
+  {{- $machine = "frontier" -}}
+
 {{- else if eq .chezmoi.os "darwin" -}}
   {{- $platform = "macos" -}}
   {{- $machine = "macbook" -}}
