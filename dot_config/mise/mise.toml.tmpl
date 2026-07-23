@@ -7,6 +7,10 @@ bat = "0.26.1"
 fd = "10.3.0"
 fzf = "0.70.0"
 "cargo:lsd" = "1.2.0"
+"cargo:tree-sitter-cli" = {
+  version = "0.26.11",
+  default-features = false,
+}
 node = "25.8.0"
 {{- if eq $platformConfig.neovim_provider "mise" }}
 neovim = "0.11.6"
@@ -19,4 +23,5 @@ tmux = "latest"
 experimental = true
 lockfile = true
 pin = true
+cargo.binstall = false
 
