@@ -5,7 +5,11 @@
 
 # Platform: {{ $system.platform }}
 # Machine: {{ $system.machine }}
+{{- if $platformConfig.needs_spack }}
 # Spack environment hash: {{ includeTemplate "spack.yaml" . | sha256sum }}
+{{- else }}
+# Spack environment disabled
+{{- end }}
 
 set -euo pipefail
 
